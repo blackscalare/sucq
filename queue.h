@@ -4,13 +4,6 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-/* struct that contains the queue data
-        data: void*
-        size?
-        index?
-        next? <-
-*/
-
 struct item
 {
     void* data; // can be any type
