@@ -12,12 +12,12 @@ struct queue* create_queue(size_t max_size)
     return q;
 }
 
-void add_q(struct queue* q, void* data)
+queue_message_e add_q(struct queue* q, void* data)
 {
     if(q->size >= q->max_size)
     {
-        printf("Queue is full\n");
-        return;
+        perror("Queue is full\n");
+        return QUEUE_IS_FULL;
     }
     
     struct item* i = malloc(sizeof(struct item));
@@ -25,7 +25,7 @@ void add_q(struct queue* q, void* data)
     if(i == NULL)
     {
         perror("malloc created null structure\n");
-        return;
+        return MALLOC_FAILED;
     }
 
     i->data = data;
@@ -42,6 +42,8 @@ void add_q(struct queue* q, void* data)
     q->tail->next = i;   
     q->tail = i;
     q->size++;
+
+    return SUCCESS;
 }
 
 void* pop_q(struct queue* q)
@@ -65,12 +67,12 @@ void* pop_q(struct queue* q)
     return data;
 }
 
-void free_q(struct queue* q)
+queue_message_e free_q(struct queue* q)
 {
     if(q->size < 0)
     {
         perror("Queue size is 0");
-        return;
+        return QUEUE_IS_EMPTY;
     }
 
     while(q->head != NULL)
@@ -90,4 +92,6 @@ void free_q(struct queue* q)
         free(q->tail);
 
     free(q);
+
+    return SUCCESS;
 }
